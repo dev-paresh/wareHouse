@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('pallets', function (Blueprint $table) {
             $table->id();
+            $table->string('qr_code')->unique();
+            $table->foreignId('section_id')->constrained()->onDelete('cascade'); 
             $table->timestamps();
         });
     }

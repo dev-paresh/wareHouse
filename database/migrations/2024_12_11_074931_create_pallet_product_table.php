@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cycle_counts', function (Blueprint $table) {
+        Schema::create('pallet_product', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pallet_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->integer('count');
+            $table->integer('quantity')->default(0); // Example field
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cycle_counts');
+        Schema::dropIfExists('pallet_product');
     }
 };

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('reeturns', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->integer('quantity');
+            $table->text('reason')->nullable();
             $table->timestamps();
         });
     }
