@@ -1,66 +1,149 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Advanced Warehouse Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive solution for product receiving, tracking, and inventory management.
 
-## About Laravel
+## Highlights
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- 🚚 **Receiving Process:** Products are received and counted at the dock before being palletized.  
+- 📦 **Palletizing:** Products are wrapped, labeled with QR codes for tracking, and prepared for storage.  
+- 🔄 **First In, First Out (FIFO):** The system ensures older products are picked before newer ones, maintaining freshness.  
+- 📊 **Cycle Counts:** Users can easily adjust inventory counts based on physical checks, streamlining inventory management.  
+- 🗂️ **Section Mapping:** The warehouse is divided into sections, allowing precise tracking of products across different environments.  
+- 🚛 **Route Return Function:** This feature helps manage returns from deliveries, reducing waste and improving efficiency.  
+- 🔍 **Real-Time Tracking:** The system provides real-time visibility of inventory, enhancing operational decision-making.  
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Key Insights
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- 🏭 **Efficiency in Operations:** The ability to scan and track products at every stage enhances workflow efficiency and minimizes errors.  
+- 📈 **Inventory Accuracy:** Real-time visibility and cycle counting enable better inventory accuracy and reduce discrepancies.  
+- 🔗 **Seamless Integration:** The warehouse management system integrates with accounting, providing a cohesive overview of inventory and finances.  
+- 📦 **Space Optimization:** The flexibility to map any area in the warehouse allows for maximum space utilization and organization.  
+- 🔄 **Loss Prevention:** The route return function significantly mitigates losses due to damage or theft, protecting profit margins.  
+- 🏷️ **Detailed Tracking:** Lot number tracking and expiration management ensure compliance and product safety.  
+- 🌐 **Scalability:** The system is adaptable for businesses of various sizes, making it a versatile choice for future growth.  
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Models and Their Responsibilities
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## User
+**Purpose:** Handles authentication, roles, and permissions.  
+**Fields:** 
+- `id`
+- `name`
+- `email`
+- `password`
+- `role` (e.g., admin, staff)  
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Relationships:**  
+- One-to-Many with `Activities` (to track user actions).  
+- Polymorphic relationship for managing logins or activity logs.  
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Product
+**Purpose:** Represents an item stored in the warehouse.  
+**Fields:** 
+- `id`
+- `name`
+- `sku`
+- `lot_number`
+- `expiration_date`
+- `quantity`
+- `section_id`  
 
-### Premium Partners
+**Relationships:**  
+- Belongs to `Section`.  
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## Section
+**Purpose:** Represents a mapped area in the warehouse.  
+**Fields:** 
+- `id`
+- `name`
+- `location`
+- `environment` (e.g., cold, dry)  
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Relationships:**  
+- Has Many `Products`.  
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Pallet
+**Purpose:** Represents palletized products for easy tracking.  
+**Fields:** 
+- `id`
+- `label`
+- `qr_code`
+- `status` (e.g., stored, in-transit)
+- `section_id`  
 
-## Security Vulnerabilities
+**Relationships:**  
+- Belongs to `Section`.  
+- Has Many `Products` (many-to-many).  
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## CycleCount
+**Purpose:** Tracks inventory audits.  
+**Fields:** 
+- `id`
+- `product_id`
+- `expected_quantity`
+- `actual_quantity`
+- `user_id`
+- `counted_at`  
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Relationships:**  
+- Belongs to `Product`.  
+- Belongs to `User`.  
+
+---
+
+## Return
+**Purpose:** Logs returned items.  
+**Fields:** 
+- `id`
+- `product_id`
+- `quantity`
+- `condition` (e.g., damaged, resellable)
+- `processed_at`  
+
+**Relationships:**  
+- Belongs to `Product`.  
+
+---
+
+## Activity
+**Purpose:** Tracks user actions for auditing purposes.  
+**Fields:** 
+- `id`
+- `user_id`
+- `description`
+- `created_at`  
+
+**Relationships:**  
+- Belongs to `User`.  
+
+
+
+# Relationships Summery
+
+- **Product <-> Section:**  
+  - One product belongs to one section.  
+  - One section has many products.  
+
+- **Product <-> Pallet:**  
+  - Many-to-Many: A product can belong to multiple pallets, and a pallet can contain multiple products.  
+
+- **CycleCount <-> Product:**  
+  - A cycle count belongs to one product.  
+  - A product can have many cycle counts.  
+
+- **Return <-> Product:**  
+  - A return belongs to one product.  
+  - A product can have many returns.  
+
+- **Activity <-> User:**  
+  - An activity belongs to one user.  
+  - A user can have many activities.  
